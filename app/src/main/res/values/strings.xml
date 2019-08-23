@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Log Book</string>
+    <array name="listTingkat">
+        <item>Mudah</item>
+        <item>Sedang</item>
+    </array>
+</resources>
