@@ -1,4 +1,4 @@
-package com.gustu.logbook;
+package com.gustu.logbook.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDialog;
@@ -15,15 +15,23 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.gustu.logbook.R;
+import com.gustu.logbook.interfaces.MainView;
+import com.gustu.logbook.models.kegiatan.Kegiatan;
+import com.gustu.logbook.models.levelKesulitan.Kesulitan;
+import com.gustu.logbook.models.levelPrioritas.Priotitas;
+import com.gustu.logbook.presenter.MainPresenter;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainView {
     @BindView(R.id.spTingkatKesulitan)
     Spinner spTingkatKesulitanJava;
     @BindView(R.id.spLevelPrioritas)
@@ -44,20 +52,17 @@ public class MainActivity extends AppCompatActivity {
     Button btTambah;
     AppCompatDialog appCompatDialog;
     FloatingActionButton floatingActionButton;
-    String[] arraytingkatKesulitan = new String[]{"Mudah", "Sedang", "Sulit"};
-    String [] arrayLevelPrioritas = new String[]{"1","2","3","4","5"};
+//    String[] arraytingkatKesulitan = new String[]{"Mudah", "Sedang", "Sulit"};
+//    String [] arrayLevelPrioritas = new String[]{"1","2","3","4","5"};
     String kesulitan,prioritas;
+    List<Kegiatan> kegiatanList = new ArrayList<>();
+    List<Kesulitan> kesulitanList = new ArrayList<>();
+    List<Priotitas> priotitasList = new ArrayList<>();
+    MainPresenter mainPresenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-//    btTambah.setOnClickListener(new View.OnClickListener() {
-//        @Override
-//        public void onClick(View view) {
-//            showDateDialog(tanggalMulai);
-//        }
-//    });
         floatingActionButton = findViewById(R.id.fabAdd);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,7 +70,22 @@ public class MainActivity extends AppCompatActivity {
                 showAddDialog();
             }
         });
+        //Init Presenter
+        initPresenter();
+        //Init App CompatDialog
+        appCompatDialog = new AppCompatDialog(this);
+        appCompatDialog.setTitle("Tambah Log");
+        appCompatDialog.setContentView(R.layout.item_tambah);
+        ButterKnife.bind(this, appCompatDialog);
+        //InitSpinner
 
+    }
+
+    private void initPresenter() {
+        mainPresenter = new MainPresenter(this);
+        mainPresenter.getKegiatan(1907);
+        mainPresenter.getPrioritas();
+        mainPresenter.getKesulitan();
 
     }
 
@@ -84,16 +104,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void showAddDialog() {
 
-        appCompatDialog = new AppCompatDialog(this);
-        appCompatDialog.setTitle("Tambah Log");
-        appCompatDialog.setContentView(R.layout.item_tambah);
-        ButterKnife.bind(this, appCompatDialog);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arraytingkatKesulitan);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spTingkatKesulitanJava.setAdapter(adapter);
-        ArrayAdapter<String> adapterLevelPrioritas = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,arrayLevelPrioritas);
-        adapterLevelPrioritas.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spLevelPrioritasJava.setAdapter(adapterLevelPrioritas);
         spLevelPrioritasJava.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -141,5 +151,41 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         appCompatDialog.show();
+    }
+
+    @Override
+    public void _onKesulitanLoad(List<Kesulitan> kesulitanList) {
+        List<String> arrayKesulitan = new ArrayList<String>();
+        for (int i=0;i<kesulitanList.size();i++){
+            arrayKesulitan.add(kesulitanList.get(i).getRLKNAMA());
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrayKesulitan);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spTingkatKesulitanJava.setAdapter(adapter);
+       // Toast.makeText(this,"BERHASIL LOAD KESULITAN",Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void _onPrioritasLoad(List<Priotitas> priotitasList) {
+        List<String> arrayPrioritas = new ArrayList<String>();
+        for (int i=0;i<priotitasList.size();i++){
+            arrayPrioritas.add(priotitasList.get(i).getRLPNAMA());
+        }
+        ArrayAdapter<String> adapterLevelPrioritas = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,arrayPrioritas);
+        adapterLevelPrioritas.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spLevelPrioritasJava.setAdapter(adapterLevelPrioritas);
+     //   Toast.makeText(this,"BERHASIL LOAD Prioritas",Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void _onKegiatanLoad(List<Kegiatan> kegiatanList) {
+
+        Toast.makeText(this,"BERHASIL LOAD Kegiatan",Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void _onFailed(String t) {
+
+        Toast.makeText(this,"Gagal",Toast.LENGTH_SHORT).show();
     }
 }

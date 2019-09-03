@@ -1,4 +1,4 @@
-package com.gustu.logbook;
+package com.gustu.logbook.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.gustu.logbook.R;
 
 public class LoginActivity extends AppCompatActivity {
     EditText ETusername,ETpassword;
