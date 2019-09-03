@@ -6,9 +6,13 @@ import androidx.appcompat.app.AppCompatDialog;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -16,14 +20,33 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity {
-    EditText tanggalMulai, tanggalSelesai, keterangan, kuantitas, hasil;
+    @BindView(R.id.spTingkatKesulitan)
+    Spinner spTingkatKesulitanJava;
+    @BindView(R.id.spLevelPrioritas)
+    Spinner spLevelPrioritasJava;
+    @BindView(R.id.etTanggalMulai)
+    EditText tanggalMulai;
+    @BindView(R.id.etTanggalSelesai)
+    EditText tanggalSelesai;
+    @BindView(R.id.etKeteranganKegiatan)
+    EditText keterangan;
+    @BindView(R.id.etKuantitas)
+    EditText kuantitas;
+    @BindView(R.id.etHasil)
+    EditText hasil;
     DatePickerDialog datePickerDialog;
     SimpleDateFormat dateFormatter;
+    @BindView(R.id.btTambahLog)
     Button btTambah;
     AppCompatDialog appCompatDialog;
     FloatingActionButton floatingActionButton;
-
+    String[] arraytingkatKesulitan = new String[]{"Mudah", "Sedang", "Sulit"};
+    String [] arrayLevelPrioritas = new String[]{"1","2","3","4","5"};
+    String kesulitan,prioritas;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,15 +83,50 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showAddDialog() {
+
         appCompatDialog = new AppCompatDialog(this);
         appCompatDialog.setTitle("Tambah Log");
         appCompatDialog.setContentView(R.layout.item_tambah);
-        btTambah = appCompatDialog.findViewById(R.id.btTambahLog);
-        tanggalMulai =appCompatDialog.findViewById(R.id.etTanggalMulai);
-        tanggalSelesai = appCompatDialog.findViewById(R.id.etTanggalSelesai);
-        keterangan = appCompatDialog.findViewById(R.id.etKeteranganKegiatan);
-        kuantitas = appCompatDialog.findViewById(R.id.etKuantitas);
-        hasil = appCompatDialog.findViewById(R.id.etHasil);
+        ButterKnife.bind(this, appCompatDialog);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arraytingkatKesulitan);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spTingkatKesulitanJava.setAdapter(adapter);
+        ArrayAdapter<String> adapterLevelPrioritas = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,arrayLevelPrioritas);
+        adapterLevelPrioritas.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spLevelPrioritasJava.setAdapter(adapterLevelPrioritas);
+        spLevelPrioritasJava.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                prioritas = spLevelPrioritasJava.getItemAtPosition(i).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        spTingkatKesulitanJava.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                 kesulitan = spTingkatKesulitanJava.getItemAtPosition(i).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        btTambah.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (tanggalMulai.getText().toString().isEmpty()||tanggalSelesai.getText().toString().isEmpty()||keterangan.getText().toString().isEmpty()||kuantitas.getText().toString().isEmpty()||hasil.getText().toString().isEmpty()||kesulitan.isEmpty()||prioritas.isEmpty()){
+                    Toast.makeText(MainActivity.this,"Form Tidak Boleh Kosong",Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(MainActivity.this,"Berhasil Ditambahkan",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
         dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
         tanggalMulai.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
     EditText ETusername,ETpassword;
@@ -21,8 +22,13 @@ public class LoginActivity extends AppCompatActivity {
         BTmasuk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(LoginActivity.this,MainActivity.class));
-                finish();
+                if (ETusername.getText().toString().isEmpty() || ETpassword.getText().toString().isEmpty()){
+                    Toast.makeText(LoginActivity.this,"Form Tidak Boleh Kosong",Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    finish();
+                }
             }
         });
     }
