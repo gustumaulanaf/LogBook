@@ -1,9 +1,9 @@
-package com.gustu.logbook.presenter;
+package com.gustu.logbook.main.presenter;
 
-import com.gustu.logbook.interfaces.MainView;
-import com.gustu.logbook.models.kegiatan.Kegiatan;
-import com.gustu.logbook.models.levelKesulitan.Kesulitan;
-import com.gustu.logbook.models.levelPrioritas.Priotitas;
+import com.gustu.logbook.main.interfaces.MainView;
+import com.gustu.logbook.main.model.kegiatan.Kegiatan;
+import com.gustu.logbook.main.model.levelKesulitan.Kesulitan;
+import com.gustu.logbook.main.model.levelPrioritas.Priotitas;
 import com.gustu.logbook.network.BaseURL;
 
 import java.util.ArrayList;
@@ -73,4 +73,5 @@ public class MainPresenter {
             }
         });
     }
+
 }

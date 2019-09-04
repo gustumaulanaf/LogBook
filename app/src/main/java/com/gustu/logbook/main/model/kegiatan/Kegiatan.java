@@ -1,4 +1,4 @@
-package com.gustu.logbook.models.kegiatan;
+package com.gustu.logbook.main.model.kegiatan;
 
 import com.google.gson.annotations.SerializedName;
 

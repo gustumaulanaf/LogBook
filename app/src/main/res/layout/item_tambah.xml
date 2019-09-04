@@ -40,13 +40,14 @@
                         android:id="@+id/etTanggalSelesai"
                         android:layout_width="300dp"
                         android:layout_height="wrap_content" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/hitam"
-                        android:layout_margin="10dp"
-                        android:text="Pilih Kegiatan :"
-                        android:textStyle="bold"/>
+               <EditText
+                        android:editable="false"
+                        android:textColor="@color/biru"
+                        android:hint="Kegiatan"
+                        android:id="@+id/etPilihKegiatan"
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content" />
+
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="300dp"
                         android:hint="Keterangan Kegiatan"

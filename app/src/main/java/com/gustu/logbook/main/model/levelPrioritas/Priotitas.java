@@ -1,4 +1,4 @@
-package com.gustu.logbook.models.levelPrioritas;
+package com.gustu.logbook.main.model.levelPrioritas;
 
 import com.google.gson.annotations.SerializedName;
 

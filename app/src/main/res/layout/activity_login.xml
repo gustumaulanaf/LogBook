@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context=".views.LoginActivity">
+    tools:context=".login.view.LoginActivity">
 <ImageView
     android:layout_margin="20dp"
     android:src="@drawable/sardjito"

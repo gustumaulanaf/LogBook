@@ -1,10 +1,14 @@
-package com.gustu.logbook.views;
+package com.gustu.logbook.main.view;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDialog;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,13 +18,16 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.gustu.logbook.R;
-import com.gustu.logbook.interfaces.MainView;
-import com.gustu.logbook.models.kegiatan.Kegiatan;
-import com.gustu.logbook.models.levelKesulitan.Kesulitan;
-import com.gustu.logbook.models.levelPrioritas.Priotitas;
-import com.gustu.logbook.presenter.MainPresenter;
+import com.gustu.logbook.main.adapter.kegiatan.KegiatanAdapter;
+import com.gustu.logbook.main.interfaces.MainView;
+import com.gustu.logbook.main.model.kegiatan.Kegiatan;
+import com.gustu.logbook.main.model.levelKesulitan.Kesulitan;
+import com.gustu.logbook.main.model.levelPrioritas.Priotitas;
+import com.gustu.logbook.main.presenter.MainPresenter;
+import com.gustu.logbook.sharePreferences.SharedPrefUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -50,15 +57,19 @@ public class MainActivity extends AppCompatActivity implements MainView {
     SimpleDateFormat dateFormatter;
     @BindView(R.id.btTambahLog)
     Button btTambah;
+    @BindView(R.id.etPilihKegiatan)
+    EditText pilihKegiatan;
+
     AppCompatDialog appCompatDialog;
     FloatingActionButton floatingActionButton;
-//    String[] arraytingkatKesulitan = new String[]{"Mudah", "Sedang", "Sulit"};
+    //    String[] arraytingkatKesulitan = new String[]{"Mudah", "Sedang", "Sulit"};
 //    String [] arrayLevelPrioritas = new String[]{"1","2","3","4","5"};
-    String kesulitan,prioritas;
-    List<Kegiatan> kegiatanList = new ArrayList<>();
+    String kesulitan, prioritas;
+    List<Kegiatan> kegiatanListMain = new ArrayList<>();
     List<Kesulitan> kesulitanList = new ArrayList<>();
     List<Priotitas> priotitasList = new ArrayList<>();
     MainPresenter mainPresenter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
         spTingkatKesulitanJava.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                 kesulitan = spTingkatKesulitanJava.getItemAtPosition(i).toString();
+                kesulitan = spTingkatKesulitanJava.getItemAtPosition(i).toString();
             }
 
             @Override
@@ -129,11 +140,10 @@ public class MainActivity extends AppCompatActivity implements MainView {
         btTambah.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (tanggalMulai.getText().toString().isEmpty()||tanggalSelesai.getText().toString().isEmpty()||keterangan.getText().toString().isEmpty()||kuantitas.getText().toString().isEmpty()||hasil.getText().toString().isEmpty()||kesulitan.isEmpty()||prioritas.isEmpty()){
-                    Toast.makeText(MainActivity.this,"Form Tidak Boleh Kosong",Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    Toast.makeText(MainActivity.this,"Berhasil Ditambahkan",Toast.LENGTH_SHORT).show();
+                if (tanggalMulai.getText().toString().isEmpty() || tanggalSelesai.getText().toString().isEmpty() || keterangan.getText().toString().isEmpty() || kuantitas.getText().toString().isEmpty() || hasil.getText().toString().isEmpty() || kesulitan.isEmpty() || prioritas.isEmpty()) {
+                    Toast.makeText(MainActivity.this, "Form Tidak Boleh Kosong", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(MainActivity.this, "Berhasil Ditambahkan", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -150,42 +160,77 @@ public class MainActivity extends AppCompatActivity implements MainView {
                 showDateDialog(tanggalSelesai);
             }
         });
+        pilihKegiatan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showKegiatanDialog(kegiatanListMain);
+            }
+        });
         appCompatDialog.show();
     }
 
     @Override
     public void _onKesulitanLoad(List<Kesulitan> kesulitanList) {
         List<String> arrayKesulitan = new ArrayList<String>();
-        for (int i=0;i<kesulitanList.size();i++){
+        for (int i = 0; i < kesulitanList.size(); i++) {
             arrayKesulitan.add(kesulitanList.get(i).getRLKNAMA());
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrayKesulitan);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spTingkatKesulitanJava.setAdapter(adapter);
-       // Toast.makeText(this,"BERHASIL LOAD KESULITAN",Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void _onPrioritasLoad(List<Priotitas> priotitasList) {
         List<String> arrayPrioritas = new ArrayList<String>();
-        for (int i=0;i<priotitasList.size();i++){
+        for (int i = 0; i < priotitasList.size(); i++) {
             arrayPrioritas.add(priotitasList.get(i).getRLPNAMA());
         }
-        ArrayAdapter<String> adapterLevelPrioritas = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,arrayPrioritas);
+        ArrayAdapter<String> adapterLevelPrioritas = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrayPrioritas);
         adapterLevelPrioritas.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spLevelPrioritasJava.setAdapter(adapterLevelPrioritas);
-     //   Toast.makeText(this,"BERHASIL LOAD Prioritas",Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void _onKegiatanLoad(List<Kegiatan> kegiatanList) {
+        kegiatanListMain.addAll(kegiatanList);
+    }
 
-        Toast.makeText(this,"BERHASIL LOAD Kegiatan",Toast.LENGTH_SHORT).show();
+    void showKegiatanDialog(List<Kegiatan> kegiatanList) {
+        KegiatanAdapter kegiatanAdapter;
+        kegiatanAdapter = new KegiatanAdapter(kegiatanList);
+        AppCompatDialog appCompatDialog = new AppCompatDialog(this);
+        appCompatDialog.setContentView(R.layout.kegiatan_dialog);
+        RecyclerView recyclerView;
+        BottomNavigationView bottomNavigationView;
+        bottomNavigationView = appCompatDialog.findViewById(R.id.buttonBawahKegiatan);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.batal:
+                        appCompatDialog.dismiss();
+                        break;
+                    case R.id.pilih:
+                        pilihKegiatan.setText(SharedPrefUtil.getString("nama_kegiatan"));
+                        keterangan.setText(SharedPrefUtil.getString("keterangan_kegiatan"));
+                        appCompatDialog.dismiss();
+                        break;
+
+                }
+                return false;
+            }
+        });
+        recyclerView = appCompatDialog.findViewById(R.id.rvKegiatan);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(kegiatanAdapter);
+        appCompatDialog.show();
     }
 
     @Override
     public void _onFailed(String t) {
 
-        Toast.makeText(this,"Gagal",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Gagal", Toast.LENGTH_SHORT).show();
     }
 }

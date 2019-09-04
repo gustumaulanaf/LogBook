@@ -1,5 +1,4 @@
-package com.gustu.logbook.interfaces;
-
+package com.gustu.logbook.main.interfaces;
 
 import com.gustu.logbook.main.model.kegiatan.Kegiatan;
 import com.gustu.logbook.main.model.levelKesulitan.Kesulitan;

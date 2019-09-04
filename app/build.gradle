@@ -40,4 +40,6 @@ dependencies {
     //Butterknife
     implementation 'com.jakewharton:butterknife:10.1.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
+    //progressdialog
+    implementation 'com.github.d-max:spots-dialog:0.4@aar'
 }

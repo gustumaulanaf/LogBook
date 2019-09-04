@@ -1,4 +1,4 @@
-package com.gustu.logbook.views;
+package com.gustu.logbook.splash;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.view.WindowManager;
 
 import com.gustu.logbook.R;
+import com.gustu.logbook.login.view.LoginActivity;
 
 public class SplashActivity extends AppCompatActivity {
 int waktuLoading = 3000;
@@ -19,7 +20,7 @@ int waktuLoading = 3000;
     new Handler().postDelayed(new Runnable() {
         @Override
         public void run() {
-            startActivity(new Intent(SplashActivity.this,LoginActivity.class));
+            startActivity(new Intent(SplashActivity.this, LoginActivity.class));
           overridePendingTransition(R.anim.fade_out,R.anim.fade_in);
           finish();
 
