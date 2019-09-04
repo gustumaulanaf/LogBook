@@ -1,10 +1,12 @@
 package com.gustu.logbook.main.presenter;
 
 import com.gustu.logbook.main.interfaces.MainView;
+import com.gustu.logbook.main.model.addLogbook.ResponseSaveLogbook;
 import com.gustu.logbook.main.model.kegiatan.Kegiatan;
 import com.gustu.logbook.main.model.levelKesulitan.Kesulitan;
 import com.gustu.logbook.main.model.levelPrioritas.Priotitas;
 import com.gustu.logbook.network.BaseURL;
+import com.gustu.logbook.sharePreferences.SharedPrefUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,5 +75,22 @@ public class MainPresenter {
             }
         });
     }
+        public void saveLogbook (String id , String tanggalMulai,String tanggalAkhir,String kodeKegiatan,String namaKegiatan,String keteranganKegiatan,String outputLogbook , String tingkatKesulitan ,String levelPrioritas,String jumlahKegiatan){
+            String kode_pegawai = SharedPrefUtil.getString("kode_pegawai");
+            String namaPegawai = SharedPrefUtil.getString("nama");
+            String kodeunit = SharedPrefUtil.getString("kode_unit");
+            baseURL.getAPI().saveLogbook(id,tanggalMulai,tanggalAkhir, kode_pegawai,namaPegawai,kodeunit,kodeKegiatan,namaKegiatan,keteranganKegiatan,outputLogbook,tingkatKesulitan,levelPrioritas,jumlahKegiatan,"2").enqueue(new Callback<ResponseSaveLogbook>() {
+                @Override
+                public void onResponse(Call<ResponseSaveLogbook> call, Response<ResponseSaveLogbook> response) {
+                    if (response.isSuccessful()){
+                        mainView._onDataAdd();
+                    }
+                }
 
+                @Override
+                public void onFailure(Call<ResponseSaveLogbook> call, Throwable t) {
+                        mainView._onDataFailedAdd();
+                }
+            });
+        }
 }

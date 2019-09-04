@@ -1,5 +1,6 @@
 package com.gustu.logbook.network;
 
+import com.gustu.logbook.main.model.addLogbook.ResponseSaveLogbook;
 import com.gustu.logbook.main.model.kegiatan.Kegiatan;
 import com.gustu.logbook.main.model.levelKesulitan.Kesulitan;
 import com.gustu.logbook.main.model.levelPrioritas.Priotitas;
@@ -38,7 +39,7 @@ public interface API {
     @Headers("Accept:application/json")
     @POST("saveLogbook")
     @FormUrlEncoded
-    void saveLogbook(
+    Call<ResponseSaveLogbook> saveLogbook(
             @Field("id_logbook") String id,
             @Field("tanggal_awal") String tangggalAwal,
             @Field("tanggal_ahir") String tanggalAkhir,

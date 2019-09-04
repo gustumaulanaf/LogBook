@@ -2,6 +2,7 @@ package com.gustu.logbook.network;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
 public class BaseURL {
     Retrofit retrofit = null;
@@ -10,6 +11,7 @@ public class BaseURL {
         if (retrofit==null){
             retrofit  = new Retrofit
                     .Builder()
+                    .addConverterFactory(SimpleXmlConverterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create())
                     .baseUrl(BASE_URL)
                     .build();

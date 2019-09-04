@@ -10,5 +10,7 @@ public interface MainView {
     void _onKesulitanLoad(List<Kesulitan> kesulitanList);
     void _onPrioritasLoad(List<Priotitas> priotitasList);
     void _onKegiatanLoad(List<Kegiatan> kegiatanList);
+    void _onDataAdd();
+    void _onDataFailedAdd();
     void _onFailed(String t);
 }

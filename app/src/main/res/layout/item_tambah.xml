@@ -31,80 +31,98 @@
                         android:textColor="@color/biru"
                         android:hint="Tanggal Mulai"
                         android:id="@+id/etTanggalMulai"
-                        android:layout_width="300dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                     <EditText
                         android:editable="false"
                         android:textColor="@color/biru"
                         android:hint="Tanggal Selesai"
                         android:id="@+id/etTanggalSelesai"
-                        android:layout_width="300dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                <EditText
                         android:editable="false"
                         android:textColor="@color/biru"
                         android:hint="Kegiatan"
                         android:id="@+id/etPilihKegiatan"
-                        android:layout_width="300dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="300dp"
+                        android:layout_width="match_parent"
                         android:hint="Keterangan Kegiatan"
                         android:layout_height="wrap_content">
 
                         <EditText
                             android:textColor="@color/biru"
                             android:id="@+id/etKeteranganKegiatan"
-                            android:layout_width="300dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="300dp"
+                        android:layout_width="match_parent"
                         android:hint="Hasil"
                         android:layout_height="wrap_content">
 
                         <EditText
                             android:textColor="@color/biru"
                             android:id="@+id/etHasil"
-                            android:layout_width="300dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
                     </com.google.android.material.textfield.TextInputLayout>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="Tingkat Kesulitan :"
-                        android:textColor="@color/hitam"
-                        android:layout_margin="10dp"
-                        android:textStyle="bold"
-                        android:layout_height="wrap_content" />
+               <LinearLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:orientation="horizontal">
+                   <TextView
+                       android:layout_width="0dp"
+                       android:layout_weight="1"
+                       android:text="Tingkat Kesulitan :"
+                       android:textColor="@color/hitam"
+                       android:layout_margin="10dp"
+                       android:textStyle="bold"
+                       android:layout_height="wrap_content" />
 
-                    <Spinner
-                        android:id="@+id/spTingkatKesulitan"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="Level Prioritas :"
-                        android:textColor="@color/hitam"
-                        android:layout_margin="10dp"
-                        android:textStyle="bold"
-                        android:layout_height="wrap_content" />
+                   <Spinner
+                       android:layout_weight="1"
+                       android:layout_margin="10dp"
+                       android:id="@+id/spTingkatKesulitan"
+                       android:layout_width="0dp"
+                       android:layout_height="wrap_content" />
+               </LinearLayout>
+                   <LinearLayout
+                       android:layout_width="match_parent"
+                       android:orientation="horizontal"
+                       android:layout_height="wrap_content">
+                       <TextView
+                           android:layout_width="0dp"
+                           android:text="Level Prioritas :"
+                           android:textColor="@color/hitam"
+                           android:layout_margin="10dp"
+                           android:textStyle="bold"
+                           android:layout_weight="1"
+                           android:layout_height="wrap_content" />
 
-                    <Spinner
-                        android:id="@+id/spLevelPrioritas"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                       <Spinner
+                           android:id="@+id/spLevelPrioritas"
+                           android:layout_width="0dp"
+                           android:layout_margin="10dp"
+                           android:layout_weight="1"
+                           android:layout_height="wrap_content" />
+                   </LinearLayout>
                     <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="300dp"
-                        android:hint="Kuantitas"
+                        android:layout_width="match_parent"
+                        android:hint="Jumlah Kegiatan"
                         android:layout_height="wrap_content">
                         <EditText
-                            android:id="@+id/etKuantitas"
+                            android:id="@+id/etJumlahKegiatan"
                             android:inputType="number"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
                     </com.google.android.material.textfield.TextInputLayout>
+
+
                     <Button
                         android:layout_width="200dp"
                         android:background="@drawable/custom_button"

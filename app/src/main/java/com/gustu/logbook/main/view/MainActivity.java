@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -29,6 +30,7 @@ import com.gustu.logbook.main.model.levelPrioritas.Priotitas;
 import com.gustu.logbook.main.presenter.MainPresenter;
 import com.gustu.logbook.sharePreferences.SharedPrefUtil;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -49,8 +51,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
     EditText tanggalSelesai;
     @BindView(R.id.etKeteranganKegiatan)
     EditText keterangan;
-    @BindView(R.id.etKuantitas)
-    EditText kuantitas;
     @BindView(R.id.etHasil)
     EditText hasil;
     DatePickerDialog datePickerDialog;
@@ -59,15 +59,18 @@ public class MainActivity extends AppCompatActivity implements MainView {
     Button btTambah;
     @BindView(R.id.etPilihKegiatan)
     EditText pilihKegiatan;
-
+    @BindView(R.id.etJumlahKegiatan)
+            EditText jumlahKegiatan;
     AppCompatDialog appCompatDialog;
     FloatingActionButton floatingActionButton;
+    String tanggaljam;
     //    String[] arraytingkatKesulitan = new String[]{"Mudah", "Sedang", "Sulit"};
 //    String [] arrayLevelPrioritas = new String[]{"1","2","3","4","5"};
     String kesulitan, prioritas;
     List<Kegiatan> kegiatanListMain = new ArrayList<>();
     List<Kesulitan> kesulitanList = new ArrayList<>();
     List<Priotitas> priotitasList = new ArrayList<>();
+  //  List<String> arrayKodekegiatan = new ArrayList<String>();
     MainPresenter mainPresenter;
 
     @Override
@@ -115,6 +118,21 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     public void showAddDialog() {
 
+  //      Runnable runnable;
+//        int delay = 1000;
+//        Handler handler = new Handler();
+//        handler.postDelayed(runnable = new Runnable() {
+//            @Override
+//            public void run() {
+//                Locale locale = new Locale("in", "ID");
+//                DateFormat df = new SimpleDateFormat("yyyyMMddTHHmmss", locale);
+//                DateFormat df2 = new SimpleDateFormat("EEEE", locale);
+//                DateFormat jam = new SimpleDateFormat("HH.mm", locale);
+//                DateFormat df3 = new SimpleDateFormat("HH.mm.ss", locale);
+//
+//                tanggaljam = df.format(Calendar.getInstance().getTime());
+//            }
+//        },delay);
         spLevelPrioritasJava.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -140,10 +158,10 @@ public class MainActivity extends AppCompatActivity implements MainView {
         btTambah.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (tanggalMulai.getText().toString().isEmpty() || tanggalSelesai.getText().toString().isEmpty() || keterangan.getText().toString().isEmpty() || kuantitas.getText().toString().isEmpty() || hasil.getText().toString().isEmpty() || kesulitan.isEmpty() || prioritas.isEmpty()) {
+                if (tanggalMulai.getText().toString().isEmpty() || tanggalSelesai.getText().toString().isEmpty() || keterangan.getText().toString().isEmpty() ||  hasil.getText().toString().isEmpty() || kesulitan.isEmpty() || prioritas.isEmpty()) {
                     Toast.makeText(MainActivity.this, "Form Tidak Boleh Kosong", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(MainActivity.this, "Berhasil Ditambahkan", Toast.LENGTH_SHORT).show();
+             //      mainPresenter.saveLogbook(tanggaljam,tanggalMulai,tanggalSelesai,);
                 }
             }
         });
@@ -194,6 +212,18 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @Override
     public void _onKegiatanLoad(List<Kegiatan> kegiatanList) {
         kegiatanListMain.addAll(kegiatanList);
+    }
+
+    @Override
+    public void _onDataAdd() {
+        Toast.makeText(this,"Log Berhasil Ditambahkan",Toast.LENGTH_SHORT).show();
+        appCompatDialog.dismiss();
+    }
+
+    @Override
+    public void _onDataFailedAdd() {
+
+        Toast.makeText(this,"Log Gagal Ditambahkan",Toast.LENGTH_SHORT).show();
     }
 
     void showKegiatanDialog(List<Kegiatan> kegiatanList) {
