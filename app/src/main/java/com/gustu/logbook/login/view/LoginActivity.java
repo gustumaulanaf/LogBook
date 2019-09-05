@@ -26,7 +26,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     @BindView(R.id.etPassword)
     EditText ETpassword;
     LoginPresenter loginPresenter;
-    AlertDialog progressDialog;
+    SpotsDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +60,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         SharedPrefUtil.saveString("nama",loginResponse.getJsonMember0().getMPGNAMAGELAR());
         SharedPrefUtil.saveString("kode_pegawai",loginResponse.getJsonMember0().getMPGKODE());
         SharedPrefUtil.saveString("kode_unit",loginResponse.getJsonMember0().getMSUKODE());
+        SharedPrefUtil.saveString("nip",loginResponse.getJsonMember0().getMPGNIP());
         startActivity(new Intent(LoginActivity.this, MainActivity.class));
         finish();
     }

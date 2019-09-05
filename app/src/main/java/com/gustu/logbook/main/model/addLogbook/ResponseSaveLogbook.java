@@ -3,11 +3,13 @@ package com.gustu.logbook.main.model.addLogbook;
 import com.google.gson.annotations.SerializedName;
 import com.gustu.logbook.login.model.JsonMember0;
 
+import org.simpleframework.xml.Element;
+
 public class ResponseSaveLogbook {
-    @SerializedName("status")
+    @Element(name = "status")
     private String status;
 
-    @SerializedName("request")
+    @Element(name = "request")
     private int request;
 
     public String getStatus() {

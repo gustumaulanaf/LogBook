@@ -4,7 +4,7 @@ import com.gustu.logbook.main.model.addLogbook.ResponseSaveLogbook;
 import com.gustu.logbook.main.model.kegiatan.Kegiatan;
 import com.gustu.logbook.main.model.levelKesulitan.Kesulitan;
 import com.gustu.logbook.main.model.levelPrioritas.Priotitas;
-import com.gustu.logbook.main.model.logbook.LogbookResponse;
+import com.gustu.logbook.fragment.home.model.LogbookResponse;
 
 import java.util.List;
 
@@ -19,10 +19,10 @@ import retrofit2.http.Query;
 public interface API {
     //Kegiatan
     @Headers("Accept:application/json")
-    @GET("getKegiatan")
-    //  @FormUrlEncoded
+    @POST("getKegiatan")
+     @FormUrlEncoded
     Call<List<Kegiatan>> getKegiatan(
-            @Query("key") int key
+            @Field("key") int key
     );
 
     //Level Prioritas
@@ -36,7 +36,7 @@ public interface API {
     Call<List<Kesulitan>> getKesulitan();
 
     //saveLogbook
-    @Headers("Accept:application/json")
+    @Headers("Accept: application/xml")
     @POST("saveLogbook")
     @FormUrlEncoded
     Call<ResponseSaveLogbook> saveLogbook(
@@ -53,13 +53,14 @@ public interface API {
             @Field("level_kesulitan") String levelKesulitan,
             @Field("level_prioritas") String levelPrioritas,
             @Field("jumlah_kegiatan") String jumlahKegiatan,
-            @Field("jumlah_source_data") String jumlahSourceData
+            @Field("jenis_source_data") String jenisSourceData
             );
 
     //GET LOGBOOK
     @Headers("Accept:application/json")
-    @GET("getLogBook")
+    @POST("getLogBook")
+    @FormUrlEncoded
     Call<LogbookResponse> getLogbook(
-            @Query("key") String key
+            @Field("key") String key
     );
 }

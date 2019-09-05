@@ -1,5 +1,7 @@
 package com.gustu.logbook.login.presenter;
 
+import android.util.Log;
+
 import com.gustu.logbook.login.interfaces.LoginView;
 import com.gustu.logbook.login.model.LoginResponse;
 import com.gustu.logbook.network.loginnetwork.LoginBaseUrl;
@@ -19,6 +21,7 @@ public class LoginPresenter {
         }
     }
     public void gotoLogin(String username , String password){
+        Log.d("LoginPresenter", "gotoLogin: "+username+password);
         loginBaseUrl.getLoginApi().login(username, password).enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {

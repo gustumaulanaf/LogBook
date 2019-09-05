@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
 public class KegiatanAdapter extends RecyclerView.Adapter<KegiatanAdapter.ViewHolder> {
     List<Kegiatan> kegiatanList;
     Context context;
-
+    int mCheckPosition=0;
     public void setContext(Context context) {
         this.context = context;
     }
@@ -36,7 +36,7 @@ public class KegiatanAdapter extends RecyclerView.Adapter<KegiatanAdapter.ViewHo
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_kegiatan_dialog,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_kegiatan_dialog, parent, false);
         return new ViewHolder(view);
     }
 
@@ -47,23 +47,34 @@ public class KegiatanAdapter extends RecyclerView.Adapter<KegiatanAdapter.ViewHo
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPrefUtil.saveString("nama_kegiatan",kegiatanList.get(position).getMKLNAMA());
-                SharedPrefUtil.saveString("keterangan_kegiatan",kegiatanList.get(position).getMKLKETERANGAN());
+                SharedPrefUtil.saveString("nama_kegiatan", kegiatanList.get(position).getMKLNAMA());
+                SharedPrefUtil.saveString("keterangan_kegiatan", kegiatanList.get(position).getMKLKETERANGAN());
+                SharedPrefUtil.saveString("kode_kegiatan", kegiatanList.get(position).getMKLKODE());
             }
         });
+
+        holder.radioButton.setChecked(position==mCheckPosition);
         holder.radioButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                SharedPrefUtil.saveString("nama_kegiatan",kegiatanList.get(position).getMKLNAMA());
-                SharedPrefUtil.saveString("keterangan_kegiatan",kegiatanList.get(position).getMKLKETERANGAN());
+                if (position== mCheckPosition){
+                    holder.radioButton.setChecked(false);
+                    mCheckPosition = -1;
+                }
+                else{
+                    mCheckPosition = position;
+                    notifyDataSetChanged();
+                }
+                SharedPrefUtil.saveString("nama_kegiatan", kegiatanList.get(position).getMKLNAMA());
+                SharedPrefUtil.saveString("keterangan_kegiatan", kegiatanList.get(position).getMKLKETERANGAN());
+                SharedPrefUtil.saveString("kode_kegiatan", kegiatanList.get(position).getMKLKODE());
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        if (kegiatanList!=null){
+        if (kegiatanList != null) {
             return kegiatanList.size();
         }
         return 0;
@@ -76,9 +87,10 @@ public class KegiatanAdapter extends RecyclerView.Adapter<KegiatanAdapter.ViewHo
         TextView namaKegiatan;
         @BindView(R.id.layoutitemkegiatan)
         RelativeLayout linearLayout;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 }

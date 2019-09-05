@@ -3,12 +3,19 @@ package com.gustu.logbook.main.view;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDialog;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
+import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,6 +29,8 @@ import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.gustu.logbook.R;
+import com.gustu.logbook.fragment.home.view.HomeFragment;
+import com.gustu.logbook.fragment.profile.ProfileFragment;
 import com.gustu.logbook.main.adapter.kegiatan.KegiatanAdapter;
 import com.gustu.logbook.main.interfaces.MainView;
 import com.gustu.logbook.main.model.kegiatan.Kegiatan;
@@ -51,8 +60,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
     EditText tanggalSelesai;
     @BindView(R.id.etKeteranganKegiatan)
     EditText keterangan;
-    @BindView(R.id.etHasil)
-    EditText hasil;
+    @BindView(R.id.etOutput)
+    EditText outputLogbook;
     DatePickerDialog datePickerDialog;
     SimpleDateFormat dateFormatter;
     @BindView(R.id.btTambahLog)
@@ -60,18 +69,21 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @BindView(R.id.etPilihKegiatan)
     EditText pilihKegiatan;
     @BindView(R.id.etJumlahKegiatan)
-            EditText jumlahKegiatan;
+    EditText jumlahKegiatan;
+
+    BottomNavigationView menuBawah;
     AppCompatDialog appCompatDialog;
     FloatingActionButton floatingActionButton;
     String tanggaljam;
-    //    String[] arraytingkatKesulitan = new String[]{"Mudah", "Sedang", "Sulit"};
-//    String [] arrayLevelPrioritas = new String[]{"1","2","3","4","5"};
     String kesulitan, prioritas;
     List<Kegiatan> kegiatanListMain = new ArrayList<>();
-    List<Kesulitan> kesulitanList = new ArrayList<>();
-    List<Priotitas> priotitasList = new ArrayList<>();
-  //  List<String> arrayKodekegiatan = new ArrayList<String>();
+    List<Kesulitan> kesulitanListMain = new ArrayList<>();
+    List<Priotitas> priotitasListMain = new ArrayList<>();
+    String kodeKesulitan, kodePrioritas, kodeKegiatan;
     MainPresenter mainPresenter;
+    Runnable runnable;
+    Handler handler = new Handler();
+    int delay = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +96,25 @@ public class MainActivity extends AppCompatActivity implements MainView {
                 showAddDialog();
             }
         });
+        gotoFragment(new HomeFragment());
+        menuBawah = findViewById(R.id.btMenuMain);
+        menuBawah.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                Fragment fragment = null;
+                switch (menuItem.getItemId()) {
+                    case R.id.homeMenu:
+                        gotoFragment(new HomeFragment());
+                        floatingActionButton.show();
+                        break;
+                    case R.id.profileMenu:
+                        gotoFragment(new ProfileFragment());
+                        floatingActionButton.hide();
+                        break;
+                }
+                return false;
+            }
+        });
         //Init Presenter
         initPresenter();
         //Init App CompatDialog
@@ -91,8 +122,12 @@ public class MainActivity extends AppCompatActivity implements MainView {
         appCompatDialog.setTitle("Tambah Log");
         appCompatDialog.setContentView(R.layout.item_tambah);
         ButterKnife.bind(this, appCompatDialog);
-        //InitSpinner
+        getTanggalJam();
+    }
 
+    private boolean gotoFragment(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction().replace(R.id.FrameMain, fragment).commit();
+        return true;
     }
 
     private void initPresenter() {
@@ -101,6 +136,19 @@ public class MainActivity extends AppCompatActivity implements MainView {
         mainPresenter.getPrioritas();
         mainPresenter.getKesulitan();
 
+    }
+
+    private void getTanggalJam() {
+        handler.postDelayed(runnable = new Runnable() {
+            @Override
+            public void run() {
+                Locale locale = new Locale("in", "ID");
+                DateFormat df = new SimpleDateFormat("yyyyMMddHHmmss", locale);
+                tanggaljam = df.format(Calendar.getInstance().getTime());
+                Log.d("MainActivity", "run: " + tanggaljam);
+                handler.postDelayed(runnable, delay);
+            }
+        }, delay);
     }
 
     private void showDateDialog(final EditText editText) {
@@ -117,26 +165,11 @@ public class MainActivity extends AppCompatActivity implements MainView {
     }
 
     public void showAddDialog() {
-
-  //      Runnable runnable;
-//        int delay = 1000;
-//        Handler handler = new Handler();
-//        handler.postDelayed(runnable = new Runnable() {
-//            @Override
-//            public void run() {
-//                Locale locale = new Locale("in", "ID");
-//                DateFormat df = new SimpleDateFormat("yyyyMMddTHHmmss", locale);
-//                DateFormat df2 = new SimpleDateFormat("EEEE", locale);
-//                DateFormat jam = new SimpleDateFormat("HH.mm", locale);
-//                DateFormat df3 = new SimpleDateFormat("HH.mm.ss", locale);
-//
-//                tanggaljam = df.format(Calendar.getInstance().getTime());
-//            }
-//        },delay);
         spLevelPrioritasJava.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 prioritas = spLevelPrioritasJava.getItemAtPosition(i).toString();
+                kodePrioritas = priotitasListMain.get(i).getRLPKODE();
             }
 
             @Override
@@ -148,6 +181,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 kesulitan = spTingkatKesulitanJava.getItemAtPosition(i).toString();
+                kodeKesulitan = kesulitanListMain.get(i).getRLKKODE();
+
             }
 
             @Override
@@ -158,10 +193,10 @@ public class MainActivity extends AppCompatActivity implements MainView {
         btTambah.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (tanggalMulai.getText().toString().isEmpty() || tanggalSelesai.getText().toString().isEmpty() || keterangan.getText().toString().isEmpty() ||  hasil.getText().toString().isEmpty() || kesulitan.isEmpty() || prioritas.isEmpty()) {
+                if (tanggalMulai.getText().toString().isEmpty() || tanggalSelesai.getText().toString().isEmpty() || keterangan.getText().toString().isEmpty() || outputLogbook.getText().toString().isEmpty() || kesulitan.isEmpty() || prioritas.isEmpty()) {
                     Toast.makeText(MainActivity.this, "Form Tidak Boleh Kosong", Toast.LENGTH_SHORT).show();
                 } else {
-             //      mainPresenter.saveLogbook(tanggaljam,tanggalMulai,tanggalSelesai,);
+                    mainPresenter.saveLogbook(tanggaljam, tanggalMulai.getText().toString(), tanggalSelesai.getText().toString(), SharedPrefUtil.getString("kode_kegiatan"), pilihKegiatan.getText().toString(), keterangan.getText().toString(), outputLogbook.getText().toString(), kodeKesulitan, kodePrioritas, jumlahKegiatan.getText().toString());
                 }
             }
         });
@@ -187,8 +222,10 @@ public class MainActivity extends AppCompatActivity implements MainView {
         appCompatDialog.show();
     }
 
+
     @Override
     public void _onKesulitanLoad(List<Kesulitan> kesulitanList) {
+        kesulitanListMain.addAll(kesulitanList);
         List<String> arrayKesulitan = new ArrayList<String>();
         for (int i = 0; i < kesulitanList.size(); i++) {
             arrayKesulitan.add(kesulitanList.get(i).getRLKNAMA());
@@ -200,6 +237,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     public void _onPrioritasLoad(List<Priotitas> priotitasList) {
+        priotitasListMain.addAll(priotitasList);
         List<String> arrayPrioritas = new ArrayList<String>();
         for (int i = 0; i < priotitasList.size(); i++) {
             arrayPrioritas.add(priotitasList.get(i).getRLPNAMA());
@@ -216,14 +254,14 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     public void _onDataAdd() {
-        Toast.makeText(this,"Log Berhasil Ditambahkan",Toast.LENGTH_SHORT).show();
         appCompatDialog.dismiss();
+        gotoFragment(new HomeFragment());
     }
 
     @Override
     public void _onDataFailedAdd() {
 
-        Toast.makeText(this,"Log Gagal Ditambahkan",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Log Gagal Ditambahkan", Toast.LENGTH_SHORT).show();
     }
 
     void showKegiatanDialog(List<Kegiatan> kegiatanList) {

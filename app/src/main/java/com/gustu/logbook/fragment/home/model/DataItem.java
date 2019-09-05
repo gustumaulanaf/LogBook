@@ -1,4 +1,4 @@
-package com.gustu.logbook.main.model.logbook;
+package com.gustu.logbook.fragment.home.model;
 
 import com.google.gson.annotations.SerializedName;
 
