@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.jakewharton.butterknife'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
@@ -44,9 +45,11 @@ dependencies {
         exclude group: 'stax', module: 'stax-api'
         exclude group: 'stax', module: 'stax'
     }
-    //Butterknife
-    implementation 'com.jakewharton:butterknife:10.1.0'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
     //progressdialog
     implementation 'com.github.d-max:spots-dialog:0.4@aar'
+    compile "androidx.core:core-ktx:+"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+repositories {
+    mavenCentral()
 }
