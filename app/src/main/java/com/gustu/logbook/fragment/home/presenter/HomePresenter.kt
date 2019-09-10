@@ -4,7 +4,9 @@ import android.util.Log
 
 import com.gustu.logbook.fragment.home.interfaces.HomeView
 import com.gustu.logbook.fragment.home.model.GetLogBook
+import com.gustu.logbook.main.model.deleteLogbook.ResponseDeleteLogbook
 import com.gustu.logbook.network.BaseURLJSON
+import com.gustu.logbook.network.BaseURLXML
 import com.gustu.logbook.sharePreferences.SharedPrefUtil
 
 import java.util.ArrayList
@@ -15,12 +17,14 @@ import retrofit2.Response
 
 class HomePresenter(internal var homeView: HomeView) {
     internal var baseURLJSON: BaseURLJSON? = null
+    internal var baseURLXML:BaseURLXML?=null
     internal val TAG = "HOME PRESENTER"
     internal var dataItemList: List<GetLogBook>? = ArrayList()
 
     init {
-        if (this.baseURLJSON == null) {
+        if (this.baseURLJSON == null && this.baseURLXML==null) {
             this.baseURLJSON = BaseURLJSON()
+            this.baseURLXML = BaseURLXML()
         }
 
     }
@@ -37,6 +41,19 @@ class HomePresenter(internal var homeView: HomeView) {
 
             override fun onFailure(call: Call<List<GetLogBook>>, t: Throwable) {
                 homeView._onDataFail()
+            }
+        })
+    }
+    fun deleteLogbook(idLogbook:String){
+        baseURLXML!!.api.deleteLogbook(idLogbook).enqueue(object :Callback<ResponseDeleteLogbook>{
+            override fun onResponse(call: Call<ResponseDeleteLogbook>, response: Response<ResponseDeleteLogbook>) {
+                if (response.isSuccessful){
+                    homeView._DataDeleted()
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseDeleteLogbook>, t: Throwable) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
         })
     }

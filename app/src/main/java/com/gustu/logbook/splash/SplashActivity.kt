@@ -26,9 +26,14 @@ class SplashActivity : AppCompatActivity(),LoginView {
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         loginPresenter = LoginPresenter(this)
         Handler().postDelayed({
-
-               startActivity(Intent(this,LoginActivity::class.java))
-               finish()
+            if (SharedPrefUtil.getBoolean("isLogin")){
+                startActivity(Intent(this,MainActivity::class.java))
+                finish()
+            }
+            else{
+                startActivity(Intent(this,LoginActivity::class.java))
+                finish()
+            }
 
         }, waktuLoading.toLong())
     }

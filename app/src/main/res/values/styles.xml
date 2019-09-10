@@ -17,8 +17,9 @@
     <style name="DialogCustom" parent="android:Theme.DeviceDefault.Dialog">
         <item name="DialogTitleAppearance">@android:style/TextAppearance.Medium</item>
         <item name="DialogTitleText">Tunggu...</item>
-        <item name="DialogSpotColor">@android:color/holo_orange_dark</item>
+        <item name="DialogSpotColor">@color/biru</item>
         <item name="DialogSpotCount">8</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
 </resources>

@@ -49,7 +49,7 @@
         <Button
             android:id="@+id/btKeluar"
             android:layout_margin="20dp"
-            android:background="@drawable/custom_button"
+            android:background="@drawable/custom_button_add"
             android:text="Keluar"
             android:textColor="@color/putih"
             android:layout_width="wrap_content"

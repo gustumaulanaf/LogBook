@@ -27,6 +27,8 @@
         app:labelVisibilityMode="labeled"
         android:layout_width="match_parent"
         android:background="@color/biru"
+        app:itemIconTint="@color/putih"
+        app:itemTextColor="@color/putih"
         android:layout_alignParentBottom="true"
         android:layout_height="wrap_content"/>
 

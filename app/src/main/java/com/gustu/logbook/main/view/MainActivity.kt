@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.provider.Settings
@@ -52,7 +54,6 @@ class MainActivity : AppCompatActivity(), MainView {
     internal lateinit var datePickerDialog: DatePickerDialog
     internal lateinit var dateFormatter: SimpleDateFormat
     internal lateinit var appCompatDialog: AppCompatDialog
-    internal lateinit var tanggaljam: String
     internal lateinit var kesulitan: String
     internal lateinit var prioritas: String
     internal var kegiatanListMain: MutableList<Kegiatan> = ArrayList()
@@ -61,9 +62,9 @@ class MainActivity : AppCompatActivity(), MainView {
     internal var kodeKesulitan: String? = null
     internal var kodePrioritas: String? = null
     internal var kodeKegiatan: String? = null
-    internal lateinit var spKesulitan : Spinner
-    internal lateinit var spPrioritas : Spinner
-    internal lateinit var btTambah : Button
+    internal lateinit var spKesulitan: Spinner
+    internal lateinit var spPrioritas: Spinner
+    internal lateinit var btTambah: Button
     internal lateinit var mainPresenter: MainPresenter
     internal lateinit var runnable: Runnable
     internal var handler = Handler()
@@ -94,11 +95,11 @@ class MainActivity : AppCompatActivity(), MainView {
         //Init App CompatDialog
         appCompatDialog = AppCompatDialog(this)
         appCompatDialog.setTitle("Tambah Log")
+        appCompatDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         appCompatDialog.setContentView(R.layout.item_tambah)
         spPrioritas = appCompatDialog.spLevelPrioritas
         spKesulitan = appCompatDialog.spTingkatKesulitan
         btTambah = appCompatDialog.btTambahLog
-        getTanggalJam()
     }
 
     private fun gotoFragment(fragment: Fragment): Boolean {
@@ -112,24 +113,6 @@ class MainActivity : AppCompatActivity(), MainView {
         mainPresenter.getPrioritas()
         mainPresenter.getKesulitan()
 
-    }
-
-    private fun getTanggalJam() {
-        runnable = Runnable {
-            val locale = Locale("in", "ID")
-            val df = SimpleDateFormat("yyyyMMddHHmmss", locale)
-            tanggaljam = df.format(Calendar.getInstance().time)
-            Log.d("MainActivity", "run: $tanggaljam")
-            handler.postDelayed(runnable, delay.toLong())
-        }
-        handler.postDelayed(runnable,delay.toLong())
-//        handler.postDelayed(Runnable {
-//                        val locale = Locale("in", "ID")
-//            val df = SimpleDateFormat("yyyyMMddHHmmss", locale)
-//            tanggaljam = df.format(Calendar.getInstance().time)
-//            Log.d("MainActivity", "run: $tanggaljam")
-//            handler.postDelayed(runnable, delay.toLong())
-//        },delay.toLong())
     }
 
     private fun showDateDialog(editText: EditText?) {
@@ -168,7 +151,7 @@ class MainActivity : AppCompatActivity(), MainView {
             if (appCompatDialog.etTanggalMulai.text.toString().isEmpty() || appCompatDialog.etTanggalSelesai.text.toString().isEmpty() || appCompatDialog.etKeteranganKegiatan.text.toString().isEmpty() || appCompatDialog.etOutput.text.toString().isEmpty() || kesulitan.isEmpty() || prioritas.isEmpty()) {
                 Toast.makeText(this@MainActivity, "Form Tidak Boleh Kosong", Toast.LENGTH_SHORT).show()
             } else {
-                mainPresenter.saveLogbook(tanggaljam, appCompatDialog.etTanggalMulai.text.toString(), appCompatDialog.etTanggalSelesai.text.toString(), SharedPrefUtil.getString("kode_kegiatan")!!, appCompatDialog.etPilihKegiatan.text.toString(), appCompatDialog.etKeteranganKegiatan.text.toString(), appCompatDialog.etOutput.text.toString(), kodeKesulitan!!, kodePrioritas!!, appCompatDialog.etJumlahKegiatan.text.toString())
+                mainPresenter.saveLogbook(appCompatDialog.etTanggalMulai.text.toString(), appCompatDialog.etTanggalSelesai.text.toString(), SharedPrefUtil.getString("kode_kegiatan")!!, appCompatDialog.etPilihKegiatan.text.toString(), appCompatDialog.etKeteranganKegiatan.text.toString(), appCompatDialog.etOutput.text.toString(), kodeKesulitan!!, kodePrioritas!!, appCompatDialog.etJumlahKegiatan.text.toString())
             }
         }
         dateFormatter = SimpleDateFormat("dd-MM-yyyy", Locale.US)

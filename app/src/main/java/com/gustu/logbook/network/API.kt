@@ -2,6 +2,7 @@ package com.gustu.logbook.network
 
 import com.gustu.logbook.fragment.home.model.GetLogBook
 import com.gustu.logbook.main.model.addLogbook.ResponseSaveLogbook
+import com.gustu.logbook.main.model.deleteLogbook.ResponseDeleteLogbook
 import com.gustu.logbook.main.model.kegiatan.Kegiatan
 import com.gustu.logbook.main.model.levelKesulitan.Kesulitan
 import com.gustu.logbook.main.model.levelPrioritas.Priotitas
@@ -38,7 +39,6 @@ interface API {
     @POST("saveLogbook")
     @FormUrlEncoded
     fun saveLogbook(
-            @Field("id_logbook") id: String,
             @Field("tanggal_awal") tangggalAwal: String,
             @Field("tanggal_ahir") tanggalAkhir: String,
             @Field("kode_pegawai") kodePegawai: String,
@@ -50,8 +50,7 @@ interface API {
             @Field("output_logbook") outputLogbook: String,
             @Field("level_kesulitan") levelKesulitan: String,
             @Field("level_prioritas") levelPrioritas: String,
-            @Field("jumlah_kegiatan") jumlahKegiatan: String,
-            @Field("jenis_source_data") jenisSourceData: String
+            @Field("jumlah_kegiatan") jumlahKegiatan: String
     ): Call<ResponseSaveLogbook>
 
     //GET LOGBOOK
@@ -67,7 +66,7 @@ interface API {
     @FormUrlEncoded
     fun deleteLogbook(
             @Field("id_logbook") id_logbook : String
-    )
+    ):Call<ResponseDeleteLogbook>
    // EDIT
     @Headers("Accept:application/json")
     @POST("updateLogbook")
@@ -85,7 +84,6 @@ interface API {
            @Field("output_logbook") outputLogbook: String,
            @Field("level_kesulitan") levelKesulitan: String,
            @Field("level_prioritas") levelPrioritas: String,
-           @Field("jumlah_kegiatan") jumlahKegiatan: String,
-           @Field("jenis_source_data") jenisSourceData: String
+           @Field("jumlah_kegiatan") jumlahKegiatan: String
    ) : Call<ResponseSaveLogbook>
 }

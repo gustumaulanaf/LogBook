@@ -78,23 +78,23 @@ class MainPresenter(internal var mainView: MainView) {
         })
     }
 
-    fun saveLogbook(id: String, tanggalMulai: String, tanggalAkhir: String, kodeKegiatan: String, namaKegiatan: String, keteranganKegiatan: String, outputLogbook: String, tingkatKesulitan: String, levelPrioritas: String, jumlahKegiatan: String) {
+    fun saveLogbook(tanggalMulai: String, tanggalAkhir: String, kodeKegiatan: String, namaKegiatan: String, keteranganKegiatan: String, outputLogbook: String, tingkatKesulitan: String, levelPrioritas: String, jumlahKegiatan: String) {
         val kode_pegawai = SharedPrefUtil.getString("kode_pegawai")
         val namaPegawai = SharedPrefUtil.getString("nama")
         val kodeunit = SharedPrefUtil.getString("kode_unit")
-        Log.d("HASIL PRESENTER", "saveLogbook: $id\n$tanggalMulai\n$tanggalAkhir\n$kode_pegawai\n$namaPegawai\n$kodeunit\n$kodeKegiatan\n$namaKegiatan\n$keteranganKegiatan\n$outputLogbook\n$tingkatKesulitan\n$levelPrioritas\n$jumlahKegiatan\n2")
-        baseURLXML!!.api.saveLogbook(id, tanggalMulai, tanggalAkhir, kode_pegawai!!, namaPegawai!!, kodeunit!!, kodeKegiatan, namaKegiatan, keteranganKegiatan, outputLogbook, tingkatKesulitan, levelPrioritas, jumlahKegiatan, "2").enqueue(object : Callback<ResponseSaveLogbook> {
+        baseURLXML!!.api.saveLogbook(tanggalMulai, tanggalAkhir, kode_pegawai!!, namaPegawai!!, kodeunit!!, kodeKegiatan, namaKegiatan, keteranganKegiatan, outputLogbook, tingkatKesulitan, levelPrioritas, jumlahKegiatan).enqueue(object : Callback<ResponseSaveLogbook> {
             override fun onResponse(call: Call<ResponseSaveLogbook>, response: Response<ResponseSaveLogbook>) {
                 if (response.isSuccessful) {
                     mainView._onDataAdd()
-                    Log.d("SUCCESS SAVE LOG", "onResponse: " + response.code())
                 }
             }
 
             override fun onFailure(call: Call<ResponseSaveLogbook>, t: Throwable) {
                 mainView._onDataFailedAdd()
-                Log.d("ERROR SAVE LOG", "onFailure: $t")
             }
         })
+    }
+    fun deleteLogBook(id:String){
+        baseURLJSON!!.api.deleteLogbook(id)
     }
 }

@@ -19,6 +19,7 @@
         app:itemTextColor="@color/putih"
         android:background="@color/biru"
         android:layout_marginTop="10dp"
+
         app:menu="@menu/menu_kegiatan"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true" />

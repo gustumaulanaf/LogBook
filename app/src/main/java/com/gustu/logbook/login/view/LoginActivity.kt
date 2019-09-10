@@ -3,8 +3,14 @@ package com.gustu.logbook.login.view
 import androidx.appcompat.app.AppCompatActivity
 
 import android.content.Intent
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
+import android.view.View
+import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
+import com.google.android.material.snackbar.Snackbar
 
 import com.gustu.logbook.R
 import com.gustu.logbook.login.interfaces.LoginView
@@ -18,6 +24,7 @@ import kotlinx.android.synthetic.main.activity_login.*
 class LoginActivity : AppCompatActivity(), LoginView {
     internal lateinit var loginPresenter: LoginPresenter
     internal lateinit var progressDialog: SpotsDialog
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -27,7 +34,16 @@ class LoginActivity : AppCompatActivity(), LoginView {
             val username = etUsername.text.toString()
             val password = etPassword.text.toString()
             if (username.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this@LoginActivity, "Form Tidak Boleh Kosong", Toast.LENGTH_SHORT).show()
+               val snackbar:Snackbar = Snackbar.make(coordinatorLogin,"Form Tidak Boleh Kosong",Snackbar.LENGTH_LONG)
+                snackbar.setAction("MENGERTI",
+                        View.OnClickListener {
+                            snackbar.dismiss()
+                        })
+                val view:View = snackbar.view
+                view.setBackgroundColor(Color.YELLOW)
+                val tv:TextView = view.findViewById(com.google.android.material.R.id.snackbar_text)
+                tv.setTextColor(Color.BLUE)
+                snackbar.show()
             } else {
                 progressDialog.show()
                 loginPresenter.gotoLogin(username, password)
@@ -55,6 +71,15 @@ class LoginActivity : AppCompatActivity(), LoginView {
 
     override fun _onFailed() {
         progressDialog.dismiss()
-        Toast.makeText(this, "Login Gagal", Toast.LENGTH_SHORT).show()
+        val snackbar = Snackbar.make(coordinatorLogin,"Login gagal",Snackbar.LENGTH_LONG)
+        snackbar.setAction("MENGERTI",
+                View.OnClickListener {
+                    snackbar.dismiss()
+                })
+        val view:View = snackbar.view
+        view.setBackgroundColor(Color.YELLOW)
+        val textView:TextView = view.findViewById(com.google.android.material.R.id.snackbar_text)
+        textView.setTextColor(Color.BLUE)
+        snackbar.show()
     }
 }

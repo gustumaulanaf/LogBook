@@ -6,4 +6,6 @@ import com.gustu.logbook.fragment.home.model.GetLogBook
 interface HomeView {
     fun _onDataLoad(dataItemList: List<GetLogBook>?): View
     fun _onDataFail(): View
+    fun _DataDeleted():View
+    fun _DataFailDelete():View
 }

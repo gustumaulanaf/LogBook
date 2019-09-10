@@ -8,11 +8,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
 import com.gustu.logbook.R
+import com.gustu.logbook.fragment.home.interfaces.HomeView
 import com.gustu.logbook.fragment.home.model.GetLogBook
+import com.gustu.logbook.fragment.home.presenter.HomePresenter
+import com.gustu.logbook.fragment.home.view.HomeFragment
 import kotlinx.android.synthetic.main.item_home_logbook.view.*
+
 class HomeAdapter(internal var dataItemList: List<GetLogBook>?) : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
     internal lateinit var context: Context
-
     fun setContext(context: Context) {
         this.context = context
     }
@@ -25,7 +28,7 @@ class HomeAdapter(internal var dataItemList: List<GetLogBook>?) : RecyclerView.A
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val dataItem = dataItemList!![position]
         if (position % 2 == 0) {
-            holder.layout!!.setBackgroundColor(Color.GRAY)
+            holder.layout!!.setBackgroundColor(Color.LTGRAY)
         } else {
             holder.layout!!.setBackgroundColor(Color.WHITE)
         }
@@ -40,8 +43,8 @@ class HomeAdapter(internal var dataItemList: List<GetLogBook>?) : RecyclerView.A
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        internal var namaKegiatan= itemView.namaKegiatanLog
-        internal var tanggal =itemView.tanggalLog
+        internal var namaKegiatan = itemView.namaKegiatanLog
+        internal var tanggal = itemView.tanggalLog
         internal var edit = itemView.btEdit
         internal var hapus = itemView.btHapus
         internal var layout = itemView.layoutItemLogbook
