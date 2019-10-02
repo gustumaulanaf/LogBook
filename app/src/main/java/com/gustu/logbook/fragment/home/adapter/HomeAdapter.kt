@@ -1,6 +1,7 @@
 package com.gustu.logbook.fragment.home.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
@@ -10,14 +11,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.gustu.logbook.R
 import com.gustu.logbook.fragment.home.interfaces.HomeView
 import com.gustu.logbook.fragment.home.model.GetLogBook
+import com.gustu.logbook.fragment.home.presenter.DeletePresenter
 import com.gustu.logbook.fragment.home.presenter.HomePresenter
 import com.gustu.logbook.fragment.home.view.HomeFragment
+import com.gustu.logbook.main.view.MainActivity
 import kotlinx.android.synthetic.main.item_home_logbook.view.*
 
 class HomeAdapter(internal var dataItemList: List<GetLogBook>?) : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
     internal lateinit var context: Context
-    fun setContext(context: Context) {
+    internal lateinit var homeFragment: HomeFragment
+    fun setContext(context: Context , homeFragment: HomeFragment) {
         this.context = context
+        this.homeFragment = homeFragment
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -34,6 +39,9 @@ class HomeAdapter(internal var dataItemList: List<GetLogBook>?) : RecyclerView.A
         }
         holder.namaKegiatan!!.text = dataItem.tLBNAMAKEGIATAN!!
         holder.tanggal!!.text = dataItem.tLBTANGGAL
+        holder.hapus.setOnClickListener {
+            homeFragment.deleteData(dataItemList!!.get(position).tLBID!!)
+        }
     }
 
     override fun getItemCount(): Int {

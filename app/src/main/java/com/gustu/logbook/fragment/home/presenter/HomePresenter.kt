@@ -53,7 +53,8 @@ class HomePresenter(internal var homeView: HomeView) {
             }
 
             override fun onFailure(call: Call<ResponseDeleteLogbook>, t: Throwable) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                    homeView._DataFailDelete()
+         //       TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
         })
     }

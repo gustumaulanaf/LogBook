@@ -61,10 +61,11 @@ class HomeFragment : Fragment(), HomeView {
         Log.d("Home Fragment", "_onDataLoad: " + "Berhasil Diload")
         homeAdapter = HomeAdapter(dataItemList)
         dataItemListMain.addAll(dataItemList!!)
-        homeAdapter.setContext(context!!)
+        homeAdapter.setContext(context!!,this)
         view.rvHistoryLogbook.setHasFixedSize(true)
         view.rvHistoryLogbook.layoutManager = LinearLayoutManager(activity)
         view.rvHistoryLogbook.adapter = homeAdapter
+        homeAdapter.notifyDataSetChanged()
         return view
     }
 
@@ -82,6 +83,7 @@ class HomeFragment : Fragment(), HomeView {
 
     override fun _DataDeleted(): View {
         progressDialog.dismiss()
+        homePresenter.getLogbook()
         homeAdapter.notifyDataSetChanged()
         return view
     }
@@ -90,5 +92,10 @@ class HomeFragment : Fragment(), HomeView {
     progressDialog.dismiss()
         Toast.makeText(activity,"Gagal Dihapus",Toast.LENGTH_SHORT).show()
         return  view
+    }
+
+    fun deleteData(id:String){
+        homePresenter.deleteLogbook(id)
+
     }
 }// Required empty public constructor
