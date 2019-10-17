@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/biru"
-    tools:context=".splash.SplashActivity">
+    tools:context=".splash.SplashActivity"
+    android:background="@color/putih">
 <LinearLayout
     android:gravity="center"
     android:layout_centerHorizontal="true"
@@ -14,13 +14,13 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 <ImageView
-    android:layout_width="100dp"
+    android:layout_width="300dp"
     android:layout_margin="10dp"
-    android:layout_height="100dp"
-    android:src="@drawable/ic_book_black_24dp"/>
+    android:layout_height="300dp"
+    android:src="@drawable/sardjito"/>
     <TextView
         android:layout_width="wrap_content"
-        android:textColor="#FFF35D"
+        android:textColor="@color/hitam"
         android:textStyle="bold"
         android:layout_height="wrap_content"
         android:text="LOGBOOK"
@@ -28,7 +28,7 @@
 </LinearLayout>
     <com.wang.avi.AVLoadingIndicatorView
         android:layout_margin="10dp"
-        app:indicatorColor="@color/kuning"
+        app:indicatorColor="@color/hitam"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         android:layout_width="wrap_content"

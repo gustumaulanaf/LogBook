@@ -16,8 +16,8 @@
         android:id="@+id/buttonBawahKegiatan"
         android:layout_width="match_parent"
         app:labelVisibilityMode="labeled"
-        app:itemTextColor="@color/putih"
-        android:background="@color/biru"
+        app:itemTextColor="@color/hitam"
+        android:background="@color/kuning"
         android:layout_marginTop="10dp"
 
         app:menu="@menu/menu_kegiatan"

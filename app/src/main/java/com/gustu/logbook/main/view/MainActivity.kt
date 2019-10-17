@@ -154,7 +154,7 @@ class MainActivity : AppCompatActivity(), MainView {
                 mainPresenter.saveLogbook(appCompatDialog.etTanggalMulai.text.toString(), appCompatDialog.etTanggalSelesai.text.toString(), SharedPrefUtil.getString("kode_kegiatan")!!, appCompatDialog.etPilihKegiatan.text.toString(), appCompatDialog.etKeteranganKegiatan.text.toString(), appCompatDialog.etOutput.text.toString(), kodeKesulitan!!, kodePrioritas!!, appCompatDialog.etJumlahKegiatan.text.toString())
             }
         }
-        dateFormatter = SimpleDateFormat("dd-MM-yyyy", Locale.US)
+        dateFormatter = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.US)
         appCompatDialog.etTanggalMulai.setOnClickListener { showDateDialog(appCompatDialog.etTanggalMulai) }
         appCompatDialog.etTanggalSelesai.setOnClickListener { showDateDialog(appCompatDialog.etTanggalSelesai) }
         appCompatDialog.etPilihKegiatan.setOnClickListener { showKegiatanDialog(kegiatanListMain) }

@@ -66,11 +66,13 @@ class HomeFragment : Fragment(), HomeView {
         view.rvHistoryLogbook.layoutManager = LinearLayoutManager(activity)
         view.rvHistoryLogbook.adapter = homeAdapter
         homeAdapter.notifyDataSetChanged()
+
         return view
     }
 
     override fun _onDataFail(): View {
         progressDialog.dismiss()
+
         Log.d("Home Fragment", "_onDataLoad: " + "Gagal Diload")
         return view
     }
@@ -83,6 +85,8 @@ class HomeFragment : Fragment(), HomeView {
 
     override fun _DataDeleted(): View {
         progressDialog.dismiss()
+        activity!!.supportFragmentManager.beginTransaction().replace(R.id.FrameMain, HomeFragment()).commit()
+
         homePresenter.getLogbook()
         homeAdapter.notifyDataSetChanged()
         return view
@@ -90,7 +94,7 @@ class HomeFragment : Fragment(), HomeView {
 
     override fun _DataFailDelete(): View {
     progressDialog.dismiss()
-        Toast.makeText(activity,"Gagal Dihapus",Toast.LENGTH_SHORT).show()
+        activity!!.supportFragmentManager.beginTransaction().replace(R.id.FrameMain, HomeFragment()).commit()
         return  view
     }
 

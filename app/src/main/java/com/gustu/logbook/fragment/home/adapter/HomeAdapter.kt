@@ -32,11 +32,11 @@ class HomeAdapter(internal var dataItemList: List<GetLogBook>?) : RecyclerView.A
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val dataItem = dataItemList!![position]
-        if (position % 2 == 0) {
-            holder.layout!!.setBackgroundColor(Color.LTGRAY)
-        } else {
-            holder.layout!!.setBackgroundColor(Color.WHITE)
-        }
+//        if (position % 2 == 0) {
+//            holder.layout!!.setBackgroundColor(Color.LTGRAY)
+//        } else {
+//            holder.layout!!.setBackgroundColor(Color.WHITE)
+//        }
         holder.namaKegiatan!!.text = dataItem.tLBNAMAKEGIATAN!!
         holder.tanggal!!.text = dataItem.tLBTANGGAL
         holder.hapus.setOnClickListener {

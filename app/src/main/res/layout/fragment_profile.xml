@@ -10,16 +10,21 @@
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <ImageView
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:src="@drawable/sardjito"/>
         <androidx.cardview.widget.CardView
             android:layout_width="300dp"
             app:cardCornerRadius="30dp"
             android:layout_gravity="center"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/cerah">
             <LinearLayout
                 android:layout_margin="10dp"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:background="@color/putih"
+                android:background="@color/cerah"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
@@ -30,7 +35,7 @@
                     android:layout_height="wrap_content"/>
                 <TextView
                     android:id="@+id/namaUser"
-                    android:text="Gustu"
+                    android:text="Faiq"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <TextView
@@ -49,9 +54,9 @@
         <Button
             android:id="@+id/btKeluar"
             android:layout_margin="20dp"
-            android:background="@drawable/custom_button_add"
+            android:background="@drawable/custom_button"
             android:text="Keluar"
-            android:textColor="@color/putih"
+            android:textColor="@color/hitam"
             android:layout_width="wrap_content"
             android:layout_height="30dp"/>
     </LinearLayout>

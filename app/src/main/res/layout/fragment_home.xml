@@ -19,8 +19,8 @@
                 android:padding="10dp"
                 android:textAllCaps="true"
                 android:gravity="center"
-                android:background="@color/biru"
-                android:textColor="@color/putih"
+                android:background="@color/kuning"
+                android:textColor="@color/hitam"
                 android:text="History LogBook"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
